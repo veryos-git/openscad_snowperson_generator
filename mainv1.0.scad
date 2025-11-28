@@ -23,10 +23,6 @@
  * [v1.0] Initial release
  */
 
-
-
-
-
 //change this number to get a different random pattern
 model_variation = 23.4; // [0:0.1:100]
 objects_to_generate = 9; // [4,9,16,25]
@@ -71,6 +67,8 @@ layers = 4;
 sector_max_scl_z = layerheight*layers;
 // how much a point is not linear distributed towards the mandala radius
 randomfactor = 0.5; // [0:0.01:1]
+
+hole_at_corners = true; // [true,false]
 
 
 
@@ -130,12 +128,18 @@ module sector_with_hole(seed_offset=0) {
         }
     }
 }
-
+module sector_if(seed_offset=0){
+    if (hole_at_corners) {
+        sector_with_hole(seed_offset);
+    } else {
+        sector_half_positive(seed_offset);
+    }
+}
 module sector(seed_offset=0) {
     union() {
-        sector_with_hole(seed_offset);
+        sector_if(seed_offset);
         mirror([1, 0, 0])
-            sector_with_hole(seed_offset);
+            sector_if(seed_offset);
     }
 }
 

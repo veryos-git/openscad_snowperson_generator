@@ -29,38 +29,47 @@
 
 //change this number to get a different random pattern
 model_variation = 23.4; // [0:0.1:100]
-objects_to_generate = 4; // [4,9,16,25]
+objects_to_generate = 9; // [4,9,16,25]
 
 /* [Advanced] */
-diameter = 130; // [10:400]
+diameter = 80; // [10:400]
 mandala_radius = diameter/2;
 corners = 5; // [3:12]
 max_rand_angle = 360/corners;
-layerheight = 0.2; // [0.08,0.12,0.16,0.2]
+layerheight = 0.12; // [0.08,0.12,0.16,0.2]
 seed = model_variation;
 
-// Distance from center to a 'leaf' of the mandala
-center_translation = -5; // [-100:0]
+// how far one sector is translated from the center
+center_translation_factor = 0; // [-1:0.01:0]
+center_translation = mandala_radius * center_translation_factor;
 
-angle1_max = 360/corners;
-anglefactor = 0.7; // [0:0.05:2]
-p2_angle = angle1_max / 2 * anglefactor;
+p1_angle = 360/corners;
 
-radiusfactor = 0.5; // [0:0.05:2]
-p2_radius = mandala_radius * radiusfactor;
 
-p2x = p2_radius * sin(p2_angle);
-p2y = p2_radius * cos(p2_angle);
 
-p1 = [0,0];
-p2 = [p2x, p2y];
-p3 = [0,mandala_radius];
-points = [p1, p2, p3];
+// how far away the trough is away from the center
+radiusfactor = 0.7; // [0:0.05:2]
+// how far away the trough is rotated towards the next corner
+anglefactor = 0.5; // [0:0.01:1]
+
+pa = [0, 0];
+pb = [0, mandala_radius];
+p1 = [mandala_radius * sin(p1_angle), mandala_radius * cos(p1_angle)];
+// the middle point between pb and p1 
+p2 = pb + anglefactor * (p1-pb);
+lengthp2 = norm(p2);
+newradiusfactor = radiusfactor* lengthp2;
+p3angle = atan2(p2[0], p2[1]);
+p3 = [newradiusfactor * sin(p3angle), newradiusfactor * cos(p3angle)];
+
+
+points = [pa, pb, p3];
 faces = [[0,1,2]];
 
 sector_basis_scl_z = layerheight;
-sector_max_scl_z = layerheight*10;
-randompoints = 6; 
+layers = 4; 
+sector_max_scl_z = layerheight*layers;
+// how much a point is not linear distributed towards the mandala radius
 randomfactor = 0.5; // [0:0.01:1]
 
 
@@ -70,23 +79,25 @@ randomfactor = 0.5; // [0:0.01:1]
 module randompolygons(seed_offset=0){
     s = seed+seed_offset;
     rand_nor = [
-        for(i = [0:randompoints-1]) 
+        for(i = [0:layers-1]) 
             rands(0, 1, 1, s+i)[0]
     ];
     
-    for(i = [0:randompoints-1]) {
+    for(i = [0:layers-1]) {
         let(
-            dist_linear = mandala_radius / randompoints,
+            dist_linear = mandala_radius / layers,
             p_now = [0, i * dist_linear + dist_linear * rand_nor[i]*randomfactor],
             p_before = (i == 0) ? [0,0] : [0, (i-1) * dist_linear + dist_linear * rand_nor[i-1]],
             points3 = [
                 p_before, 
                 p_now, 
-                p2
+                p3
             ],
             faces2 = [[0,1,2]], 
             scl_z = rands(0, sector_max_scl_z, 1, s+i+123)[0]
         )
+        // rainbow color 
+        color([rands(0,1,1,s+i+456)[0], rands(0,1,1,s+i+789)[0], rands(0,1,1,s+i+101112)[0]])
         linear_extrude(height = scl_z)
             polygon(points = points3, paths = faces2);
     }
@@ -154,6 +165,7 @@ module mandalas() {
     }
 }
 
+// sector_half_positive();
 // randompolygons(0);
 // mandala();
 mandalas();

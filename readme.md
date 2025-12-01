@@ -1,5 +1,7 @@
 a openscad program to create tiny houses 
 
+![alt text](images/makegif/output.gif)
+
 # printing
 a brim is helpful to prevent elephant foot. 
 

@@ -1,7 +1,7 @@
 /**
  * Star Generator
  *
- * Sourcecode: git@github-veryos:veryos-git/openscad_stargen_v3.git
+ * Sourcecode: https://github.com/veryos-git/openscad_star_translucent_randomline_cutout
  * Author: veryos  
  * Version: 1.0
  *

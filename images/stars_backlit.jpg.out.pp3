@@ -9,12 +9,12 @@ InTrash=false
 [Exposure]
 Auto=false
 Clip=0.02
-Compensation=0.71999999999999997
-Brightness=86
-Contrast=37
+Compensation=2.1499999999999999
+Brightness=-2
+Contrast=40
 Saturation=0
-Black=3714
-HighlightCompr=0
+Black=1182
+HighlightCompr=100
 HighlightComprThreshold=0
 ShadowCompr=50
 HistogramMatching=false
@@ -280,8 +280,8 @@ Anchor=50
 
 [Shadows & Highlights]
 Enabled=true
-Highlights=100
-HighlightTonalWidth=35
+Highlights=26
+HighlightTonalWidth=12
 Shadows=0
 ShadowTonalWidth=23
 Radius=40
@@ -300,22 +300,22 @@ colorspace=acesp1
 rolloff=true
 
 [ToneEqualizer]
-Enabled=false
+Enabled=true
 Band0=0
 Band1=0
-Band2=0
-Band3=0
-Band4=0
+Band2=-83
+Band3=-79
+Band4=17
 Band5=0
 Regularization=0
 Pivot=0
 
 [Crop]
 Enabled=true
-X=1875
-Y=896
-W=2290
-H=2990
+X=1233
+Y=778
+W=3582
+H=2622
 FixedRatio=false
 Ratio=As Image
 Orientation=As Image
@@ -399,7 +399,7 @@ CenterY=0
 
 [Resize]
 Enabled=false
-Scale=0.14999999999999999
+Scale=0.23000000000000001
 AppliesTo=Cropped area
 Method=Lanczos
 DataSpecified=3
@@ -434,7 +434,7 @@ Enabled=true
 Contrast=11
 AutoContrast=true
 AutoRadius=true
-DeconvRadius=1.1399999999999999
+DeconvRadius=0.76000000000000001
 DeconvRadiusOffset=0
 DeconvIterCheck=true
 DeconvIterations=20

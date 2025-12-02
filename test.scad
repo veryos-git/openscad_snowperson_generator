@@ -1,95 +1,58 @@
-/**
-* Mandala Generator
-*
-* Sourcecode: git@github-veryos:veryos-git/openscad_stargen_v3.git
-* Author: veryos  
-* Version: 1.0
-*
-* Description:
-* This OpenSCAD script generates a 3d object is a tiny house
-*
-* License:
-*    Licensed under the GNU General Public License v3.0 or later.
-*    See the LICENSE.txt file in the repository root for details.
-*
-* Opensource credits:
-* - openscad 'language': https://openscad.org/ 
-* - online openscad playground: https://ochafik.com/openscad2
-* - free image editor : https://rawtherapee.com/
-* - free source code hosting: https://github.com/
-* - online photo collage: https://pixlr.com/photo-collage/
-* - thumbnail designer: https://tools.datmt.com/tools/thumb-maker
-* 
-* https://ochafik.com/openscad2
-*
-* Changelog:
-* [v1.0] Initial release
-*/
 
+pa = [0,0,0];
+pb  = [20, 10, 0];
+p3 = [10, 30, 0];
+seed = 12345;
+layerheight = 0.2;
+sector_max_scl_z = 10;  
+n_randomlines = 5;
+thickness = 2;
+extrusionwidth = 0.42;
 
-// proxying the parameters
-housewidth = 20;
-housedepth = 30; 
-househeight = 25;
-roofheight = 10;
-thicknesswall = 2;
-
-a = housewidth; 
-l = housedepth;
-b = househeight;
-
-c = roofheight; 
-tw = thicknesswall;
-
-
-// Axis helper for orientation
-module axis_helper(size = 5) {
-    // X axis - Red
-    color("red") 
-        translate([0, 0, 0]) 
-        rotate([0, 90, 0]) 
-        cylinder(h = size, r = 0.1, $fn = 8);
-    
-    // Y axis - Green
-    color("green") 
-        translate([0, 0, 0]) 
-        rotate([90, 0, 0]) 
-        cylinder(h = size, r = 0.1, $fn = 8);
-    
-    // Z axis - Blue
-    color("blue") 
-        translate([0, 0, 0]) 
-        cylinder(h = size, r = 0.1, $fn = 8);
-}
-
-axis_helper(5);
-
-
-module window(
-    w, 
-    h,
-    t, 
-    t2 // fenstersprossen / window mountins / window gridbars  
-){
+function triangle_max_sideleng(a,b,c) = 
     let(
-        rows = 2, 
-        cols = 2, 
-        pane_width = (w - (t2*(cols+1)))/cols,
-        pane_height = (h - (t2*(rows+1)))/rows
-    ){
-        difference(){
-            // window frame
-            cube([w, h, t]);
+        a = norm(pb - pa),
+        b = norm(p3 - pb),
+        c = norm(pa - p3)
+    )
+    max([a,b,c]);
 
-            // cut out the glass panes
-            for(i = [0 : cols - 1]){
-                for(j = [0 : rows - 1]){
-                    translate([t2 + i*(t2+pane_width), t2 + j*(t2+pane_height), -t])
-                        cube([pane_width, pane_height, t*3]);
+
+
+function random_point_in_triangle(pa, pb, pc, seed) =
+    let(
+        r1 = rands(0, 1, 1, seed)[0],
+        r2 = rands(0, 1, 1, seed+23)[0],
+        u  = r1 + r2 > 1 ? 1 - r1 : r1,
+        v  = r1 + r2 > 1 ? 1 - r2 : r2
+    )
+    pa + u*(pb - pa) + v*(pc - pa);
+
+
+        union(){
+            for(i = [0:n_randomlines-1]) 
+                let(
+                    max_sidelength = triangle_max_sideleng(pa, pb, p3),
+                    trn_rand = random_point_in_triangle(pa, pb, p3 , seed+i), 
+                    rotation = rands(0,360,1, seed+i+50)[0], 
+                    random_z_offset = rands(layerheight, thickness,1, seed+i+100)[0], 
+                    width = max_sidelength, 
+                    height = rands(extrusionwidth , extrusionwidth*5, 1, seed+i+150)[0] // width of the 'line'
+                    // get a random point in the area of the 
+                ){
+                    translate([trn_rand[0], trn_rand[1], random_z_offset])
+                    rotate([0,0,rotation])
+                    translate([-(width/2), 0, 0])
+                    color([0.2, 0.5, 0.8, 0.4])
+                    cube([
+                        width, 
+                        height, 
+                        sector_max_scl_z*2
+                    ]);
                 }
-            }
-            
-        }
-    }
-}
-window(3, 5, .5, 0.5);
+        } 
+//visualize the triangle 
+points = [[pa[0], pa[1]], [pb[0], pb[1]], [p3[0], p3[1]]];
+faces = [[0,1,2]];
+linear_extrude(height = thickness)
+    polygon(points = points, paths = faces);

@@ -1,17 +1,12 @@
-a openscad program to create tiny houses 
-![tiny houses generated with openscad and 3d printed](images/DSC00199-1.jpg)
+a openscad program to create 3d printed translucent stars
+each star corner has randomly placed lines that are cut out at different z heights. due to the circular pattern this will create amazing looking patterns. due to the translucidity of a thin printed filament thicker parts will be darker when backlit. 
 
-# printing
-a brim is helpful to prevent elephant foot. 
+# slicing & printing
 
-## overhangs
-small overhangs of the windows do not really need support. 
-
-# v1 
-when the base is bigger than 40x40 a hole is cut out for a tealight!
+layerheight is crucial. if it is set to 0.12mm in parameters. it should also be set to .12 mm in slicer
+also make sure to use concentric surface patterns!
 
 # requests
-
 if you have special wishes for adaptation of the customizer, let us know, if we have time we love to improve ecah model.
 
 # sharing is caring
@@ -22,6 +17,6 @@ https://ochafik.com/openscad2
 
 
 ## veryos
-very os stands for very open source. It's target is to share as much knowledge as possible. 3d printing would not be where it is if there was no open source community. 
+very os stands for 'very open source'. It's target is to share as much knowledge as possible. 3d printing would not be where it is if there was no open source community. 
 
 programmed by veryos ( very open source) 

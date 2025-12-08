@@ -144,4 +144,4 @@ module reference_cubes_with_plate(
 }
 
 
-reference_cubes_with_plate(scl_x, scl_y, scl_z, padding);
+reference_cubes_with_plate(scl_x, scl_y, scl_z, padding, chamfer);

@@ -30,7 +30,7 @@
 //use <BOSL/shapes.scad>
 
 //using BOSL2 for makerworld compatibility
-use <BOSL/shapes.scad>
+include <BOSL2/std.scad>;
 
 
 scl_x = 1;

@@ -32,7 +32,6 @@
 
 //using BOSL2 for makerworld compatibility
 include <BOSL2/std.scad>
-
 /* [balls 🏐] */
 dia_ball1 = 30; 
 dia_ball2 = 18; 
@@ -41,31 +40,31 @@ dia_ball3 = 11;
 dist_ball2 = 3;
 dist_ball3 = 5; 
 
-
 r1 = dia_ball1/2;
 r2 = dia_ball2/2;
 r3 = dia_ball3/2;
 
-
 bottom_cut_y_offset = 0;
 
-/* [arms 💪] */
+/* [left arm 💪] */
+left_arm_thickness = 2; 
+left_arm_length = 20;
+left_arm_finger_count = 5;
+left_arm_finger_length = 5;
+left_arm_finger_thickness = 1;
 left_arm_x_offset = 0;
 left_arm_y_offset = -5;
+left_arm_rotation = 45;
+
+/* [right arm 💪] */
+right_arm_thickness = 2; 
+right_arm_length = 20;
+right_arm_finger_count = 5;
+right_arm_finger_length = 5;
+right_arm_finger_thickness = 1;
 right_arm_x_offset = 0;
 right_arm_y_offset = -5;
-left_arm_rotation = 45;
 right_arm_rotation = -45;
-left_arm_thickness = 2; 
-right_arm_thickness = 2; 
-left_arm_length = 20;
-right_arm_length = 20;
-left_arm_finger_count = 5;
-right_arm_finger_count = 5;
-left_arm_finger_length = 5;
-right_arm_finger_length = 5;
-left_arm_finger_thickness = 1;
-right_arm_finger_thickness = 1;
 
 /* [buttons 🔘] */
 button_count = 5; 
@@ -74,25 +73,24 @@ button_size = 1.4;
 /* [eyes 👀] */
 left_eye_size = 0.8;
 right_eye_size = 0.8;
-left_eye_x_offset = 0.3;//relative to center
+left_eye_x_offset = 0.3; // relative to center
 left_eye_y_offset = 0.3;
-right_eye_x_offset = -0.3;//relative to center
+right_eye_x_offset = -0.3; // relative to center
 right_eye_y_offset = 0.3;
 
 /* [gender 🚻] */
 gender = "female"; // [male, female]
+breast_size = 3.5;
 breast_x_offset = 0.2;
 breast_y_offset = 0.2;
-breast_size = 3.5;
 
 /* [nose 👃] */
-nose_radius_front = 1.0; 
-nose_radius_back = 0.2;
+nose_radius_back = 1.0; 
+nose_radius_front = 0.2;
 nose_length = 5;
 nose_y_offset = 0.1;
 
-
-
+$fn = 100;
 
 function rtclr(seed) = [
     rands(0,1,1,seed+234.2)[0],
@@ -147,7 +145,6 @@ module ahp(
     color([0,0,1,0.4])
     cuboid([length,2, 0.2]);
 }
-ahp(100);
 
 
 module arm(
@@ -236,9 +233,9 @@ module snowperson(){
     translate([0, 0, r1+r2+dist_ball3])
     ballonsphere(r3, right_eye_size, right_eye_x_offset, right_eye_y_offset);
     //nose
-    translate([0, -r3+nose_radius_front, r1+r2+dist_ball3])
+    translate([0, -r3+nose_radius_back, r1+r2+dist_ball3])
     rotate([90-nose_y_offset*90,0,0])
-    cylindercapped(h=nose_length, r1=nose_radius_front, r2=nose_radius_back);
+    cylindercapped(h=nose_length, r1=nose_radius_back, r2=nose_radius_front);
 }
 
 module snowperson_basecut(){
@@ -261,3 +258,4 @@ snowperson_basecut();
 // arm();
 
 // cylindercapped(h=20, r1=5, r2
+// ahp(100);

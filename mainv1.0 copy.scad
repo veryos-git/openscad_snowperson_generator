@@ -82,7 +82,7 @@ right_eye_y_offset = 0.3;
 /* [gender 🚻] */
 gender = "female"; // [male, female]
 breast_x_offset = 0.2;
-breast_y_offset = 0.2;
+breast_y_offset = 0.5;
 breast_size = 3.5;
 
 /* [nose 👃] */
@@ -200,6 +200,7 @@ module ballonsphere(
 
 module snowperson(){
 
+    
     // ball 1------------------------------------------------
     color(rtclr(1))
     sphere(r1);
@@ -220,10 +221,10 @@ module snowperson(){
 
     if(gender == "female"){
         // add boobs 
-        translate([0,0,r1+dist_ball2])
-        ballonsphere(r2-(r2*0.2), breast_size, breast_x_offset, breast_y_offset);
-        translate([0,0,r1+dist_ball2])
-        ballonsphere(r2-(r2*0.2), breast_size, -breast_x_offset, breast_y_offset);
+        translate([0,0,r1+dist_ball2+left_arm_x_offset+left_arm_y_offset])
+        ballonsphere(r2, breast_size, breast_x_offset, breast_y_offset);
+        translate([0,0,r1+dist_ball2+right_arm_x_offset+right_arm_y_offset])
+        ballonsphere(r2, breast_size, -breast_x_offset, breast_y_offset);
 
     }
     // ball 3------------------------------------------------

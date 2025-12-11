@@ -1,0 +1,3 @@
+//makerworld makes 'snake var case' for the user readable label
+snake_var_case = 2;
+camelVarCase = 2;
